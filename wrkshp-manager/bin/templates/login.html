@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="layout :: site-head('Wrkshp Manager')"/>
+	<body>
+		<header th:replace="layout :: site-header" ></header>
+		<div class="container">
+			<div th:replace="layout :: site-page-header('Please Login')"></div>
+			<div th:replace="layout :: alerts"></div>
+			<p th:if="${param.logout}" class="alert alert-success">You have been logged out!</p>
+			<div class="row">
+				<div class="col-sm-4 col-sm-offset-4">
+					<form th:action="@{/login}" method="post" class="form-horizontal">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<h4 class="panel-title">Login</h4>
+							</div>
+							<div class="panel-body">
+								<div class="form-group">
+									<label for="username" class="col-sm-5 control-label">Username:</label>
+									<div class="col-sm-7">
+										<input type="text" class="form-control" id="username" name="username"></input>
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="password" class="col-sm-5 control-label">Password:</label>
+									<div class="col-sm-7">
+										<input type="password" class="form-control" id="password" name="password"></input>
+									</div>
+								</div>
+							</div>
+							<div class="panel-footer">
+								<div class="row">
+									<div class="col-sm-6">
+										<button type="reset" class="btn btn-danger btn-block">Reset</button>
+									</div>
+									<div class="col-sm-6">
+										<button type="submit" class="btn btn-success btn-block">Login</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+					</form>
+				</div>
+			</div>
+		</div>
+		<footer th:replace="layout :: site-footer" ></footer>
+		<th:block th:insert="layout :: site-scripts" ></th:block>
+	</body>
+</html>

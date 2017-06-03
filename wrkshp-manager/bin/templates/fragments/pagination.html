@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<head>
+	</head>
+	<body>
+		<nav th:fragment='pagination (url)' th:if="${page.totalPages gt 0}" aria-label="Page navigation" class="pagination-centered">
+			<ul class="pagination">
+				<li th:class="${page.first} ? 'disabled' : ''">
+					<span th:if="${page.first}">&laquo;</span>
+					<a th:if="${not page.first}" th:href="@{${url}(page=0,size=${page.size})}">&laquo;</a>
+				</li>
+				<li th:class="${page.number} gt 0 ? '' : 'disabled'">
+					<span th:if="${page.number le 0}">&lt;</span>
+					<a th:if="${page.number gt 0}" th:href="@{${url}(page=${page.number - 1},size=${page.size})}" title="Go to previous page">&lt;</a>
+				</li>
+				<li th:each="i : ${#numbers.sequence(1, page.totalPages)}" th:class="${page.number eq i - 1} ? 'active' : ''">
+					<span th:if="${page.number eq i - 1}" th:text="${i}">1</span>
+					<a th:if="not ${page.number eq i - 1}" th:href="@{${url}(page=${i - 1},size=${page.size})}"><span th:text="${i}">1</span></a>
+				</li>
+				<li th:class="${page.number + 1 lt page.totalPages} ? '' : 'disabled'">
+					<span th:if="${page.number + 1 eq page.totalPages}">&gt;</span>
+					<a th:if="${page.number + 1 lt page.totalPages}" th:href="@{${url}(page=${page.number + 1},size=${page.size})}" title="Go to next page">&gt;</a>
+				</li>
+				<li th:class="${page.last} ? 'disabled' : ''">
+					<span th:if='${page.last}'>&raquo;</span>
+					<a th:if="${not page.last}" th:href="@{${url}(page=${page.totalPages - 1},size=${page.size})}">&raquo;</a>
+				</li>
+			</ul>
+		</nav>
+	</body>
+</html>

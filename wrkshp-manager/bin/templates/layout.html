@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<head th:fragment="site-head(title)" th:assert="${!#strings.isEmpty(title)}">
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/><!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/><!-- Optional theme -->
+		<link rel="stylesheet" href="../static/css/bootstrap-datetimepicker.min.css" th:href="@{/css/bootstrap-datetimepicker.min.css}" />
+		<link rel="stylesheet" href="../static/css/styles.css" th:href="@{/css/styles.css}" />
+		<link rel="stylesheet" href="../static/css/material-switch.css" th:href="@{/css/material-switch.css}" />
+		<link rel="icon" href="../static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
+		<title th:text="'Wrkshp Manager ' + ${title}"></title>
+	</head>
+	<body>
+		<header th:fragment="site-header">
+			<nav class="navbar navbar-default navbar-static-top" role="navigation">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#digitaldocs-web-navbar-collapse" aria-expanded="false">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-left" href="index.html" th:href="@{/web}"><img class="img-responsive" src="../static/images/site-logo.jpg" th:src="@{/images/site-logo.jpg}" /></a>
+					</div>
+					<div class="collapse navbar-collapse" id="digitaldocs-web-navbar-collapse">
+						<ul class="nav navbar-nav">
+							<li><a href="index.html" th:href="@{/}">Home</a></li>
+							<li sec:authorize-url="/web/customers"><a href="customers/index.html" th:href="@{/web/customers}">Customers</a></li>
+<!-- 							<li sec:authorize-url="/web/documents"><a href="documents/index.html" th:href="@{/web/documents}">Documents</a></li> -->
+<!-- 							<li sec:authorize-url="/web/documenttypes"><a href="documenttypes/index.html" th:href="@{/web/documenttypes}">Document Types</a></li> -->
+<!-- 							<li sec:authorize-url="/web/documentfields"><a href="documentfields/index.html" th:href="@{/web/documentfields}">Document Field Config</a></li> -->
+<!-- 							<li sec:authorize-url="/web/jobs"><a href="jobs/index.html" th:href="@{/web/jobs}">Processing Jobs</a></li> -->
+						</ul>
+						<form sec:authorize="isAuthenticated()" class="navbar-form navbar-right" th:action="@{/logout}" method="post">
+							<button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-log-out"></span> Logout</button>
+						</form>
+						<ul class="nav navbar-nav navbar-right">
+							<li sec:authorize="!isAuthenticated()"><a href="/login.html" th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+							<li sec:authorize="isAuthenticated()">
+								<p class="navbar-text"><span class="glyphicon glyphicon-user"></span> Hello, <b sec:authentication="principal.username"></b></p>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<th:block th:fragment="alerts">
+			<div th:if="${alerts != null}" th:class="'alert alert-' + ${alerts.code} + ' alert-dismissible'" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span th:text="${alerts.message}"></span>
+				<ul>
+					<li th:if="${!#strings.isEmpty(alerts.url)}">
+						<a th:href="${alerts.url}" th:text="${alerts.url}"></a>
+					</li>
+					<li th:each="e,status : ${alerts.entries}" th:text="${e}"></li>
+				</ul>
+			</div>
+		</th:block>
+		<div th:fragment="site-page-header(title)" th:assert="${!#strings.isEmpty(title)}" class="page-header">
+			<h1 th:text="${title}"></h1>
+		</div>
+		<footer th:fragment="site-footer" class="footer">
+			<p>&copy; Darth Maximus Technologies, <span th:text="${#dates.year(#dates.createNow())}"></span></p>
+			<b th:text="'Now is: ' + ${#execInfo.now.time}"></b>
+		</footer>
+		<th:block th:fragment="site-scripts">
+			<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Latest compiled and minified JavaScript -->
+			<script src="/js/moment.min.js"></script>
+			<script src="/js/bootstrap-datetimepicker.min.js"></script>
+			<script src="/js/common.js"></script>
+		</th:block>
+	</body>
+</html>

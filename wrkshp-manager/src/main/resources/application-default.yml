@@ -1,0 +1,10 @@
+spring:
+    thymeleaf:
+        cache: false
+
+security:
+    sessions: IF_REQUIRED
+    maximumSessions: 10
+    
+web:
+    default-page-size: 50

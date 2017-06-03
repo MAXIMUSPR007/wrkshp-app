@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<head>
+	</head>
+	<body>
+		<div th:fragment="dashboard-panel" th:class="'info-box info-box-' + ${cls}">
+			<h3 class="info-box-heading" th:text="${title}"></h3>
+			<span th:class="'info-box-icon info-box-' + ${cls}"><span th:class="'glyphicon glyphicon-' + ${icon}"></span></span>
+			<div class="info-box-content">
+				<span class="info-box-text">Envelopes</span>
+				<span class="info-box-number" th:text="${envelopes}"></span>
+				<span class="info-box-text">Documents</span>
+				<span class="info-box-number" th:text="${documents}"></span>
+			</div>
+			<a sec:authorize-url="/web/details" href="javascript:;" th:attr="data-status=${title} + ',' + ${cls}" data-target="docs-txs">
+				<div class="info-box-footer">
+					<span class="pull-left">Details</span>
+					<span class="pull-right">
+						<span class="glyphicon glyphicon-play-circle"></span>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+			</a>
+		</div>
+	</body>
+</html>

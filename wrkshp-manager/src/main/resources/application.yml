@@ -1,0 +1,17 @@
+spring:
+    application:
+        name: ${app.name}
+        
+logging:
+    file: /opt/${app.name}/${app.name}.log
+    
+server:
+    port: 8085 
+    
+management:
+    port: 9085
+    security:
+        enabled: false
+        roles:
+        - ADMIN
+        - USER

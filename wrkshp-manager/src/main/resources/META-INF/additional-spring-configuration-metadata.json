@@ -1,0 +1,22 @@
+{"properties": [
+  {
+    "name": "security.sessions-policy",
+    "type": "java.lang.String",
+    "description": "Session creation policy."
+  },
+  {
+    "name": "security.maximum-sessions",
+    "type": "java.lang.Integer",
+    "description": "Maximum number of sessions for a user."
+  },
+  {
+    "name": "web.default-page-size",
+    "type": "java.lang.Integer",
+    "description": "Page size for paged responses."
+  },
+  {
+    "name": "app.name",
+    "type": "java.lang.String",
+    "description": "Application name expanded from Gradle"
+  }
+]}

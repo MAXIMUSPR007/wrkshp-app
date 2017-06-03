@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+	http://logback.qos.ch/manual/configuration.html 
+-->
+<configuration debug="false" scan="false">
+	<include resource="org/springframework/boot/logging/logback/defaults.xml" />
+	<include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+	<!-- 
+		allows us to expand macros that reference application.properties
+		http://stackoverflow.com/a/29323582
+	-->
+	<property resource="application.properties" />
+		<springProfile name="prod">
+		<appender name="STASH" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	    	<file>${LOG_FILE}.json</file>
+	    	<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+	      		<fileNamePattern>${LOG_FILE}.json-%d{yyyy-MM-dd}</fileNamePattern>
+	      		<maxHistory>30</maxHistory>
+		    </rollingPolicy>
+	        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+	            <includeCallerInfo>false</includeCallerInfo>
+	            <includeMdc>true</includeMdc>
+	            
+	            <!-- all log entries are decorated with these fields -->
+	            <customFields>{"appname":"${info.build.name}","version":"${info.build.version}"}</customFields>
+	        </encoder>
+	  	</appender>
+	  	<logger name="com.darthmaximus.wrkshp" level="info"/>
+	</springProfile>
+  	<!-- if deployed to non developer environment, then we will also use plain-text logs that roll.
+  		 we could get rid of this when ELK is available, or may be useful to always have this as backup.
+  	--> 
+	<springProfile name="local, dev, in, prod">
+	  	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<file>${LOG_FILE}</file>
+			<encoder>
+				<pattern>${FILE_LOG_PATTERN}</pattern>
+			</encoder>
+			<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+				<fileNamePattern>${LOG_FILE}.%i</fileNamePattern>
+			</rollingPolicy>
+			<triggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+				<MaxFileSize>10MB</MaxFileSize>
+			</triggeringPolicy>
+		</appender>
+		<logger name="com.darthmaximus.wrkshp" level="info"/>
+  	</springProfile>
+  	
+  	<springProfile name="default,local">
+	  	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+	  		<encoder>
+	  			<pattern>${FILE_LOG_PATTERN}</pattern>
+	  		</encoder>
+	  	</appender>
+		<logger name="com.darthmaximus.wrkshp" level="info"/>
+  	</springProfile>
+
+	<logger name="com.darthmaximus.wrkshp" level="debug"/>
+	<logger name="org.springframework" level="warn"/>
+
+	<root level="WARN">
+		<springProfile name="default,local">
+			<appender-ref ref="CONSOLE" />
+		</springProfile>
+		<springProfile name="local, dev, in, prod">
+			<appender-ref ref="FILE" />
+		</springProfile>
+		<springProfile name="prod">
+			<appender-ref ref="STASH" />
+		</springProfile>
+	</root>
+</configuration>

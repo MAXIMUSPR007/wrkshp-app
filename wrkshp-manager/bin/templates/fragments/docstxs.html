@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<head>
+	</head>
+	<body>
+		<div th:fragment="docstxs" th:id="${id} + '-txs'" class="row">
+			<div class="col-xs-12">
+				<div th:class="'panel panel-' + ${cls}">
+					<div class="panel-heading">
+						<h3 class="panel-title pull-left text-capitalize">
+							<span th:text="'Envelopes ' + ${id}"></span>
+						</h3>
+						<a th:if="${canExport}" href="javascript:;" th:href="@{/web/export(status=${id},forStatus='true',start=${start},end=${end})}" class="btn btn-info pull-right"><span class="glyphicon glyphicon-export"></span> Export</a>
+						<div class="clearfix"></div>
+					</div>
+					<div class="panel-body">
+						<div class="accordion-group">
+							<table class="table table-bordered table-hover table-striped">
+								<tr>
+									<th>#</th>
+									<th>External Id (DocuSign EnvelopeId)</th>
+									<th>Provider</th>
+									<th>Count</th>
+									<th>Created</th>
+									<th>Updated</th>
+									<th>Is Rush</th>
+									<th>Status</th>
+								</tr>
+								<th:block th:each="tx,txStatus : ${page}">
+									<tr>
+										<td th:text="${txStatus.count + page.size * page.number}"></td>
+										<td><a th:text="${tx.externalId}" role="button" data-toggle="collapse" href="javascript:;" aria-expanded="false" th:attr="data-target='#' + ${id} + '-tx-' + ${txStatus.count}, data-parent='#' + ${id} + '-txs', aria-controls='' + ${id} + '-tx-' + ${txStatus.count}"></a></td>
+										<td><a href="providers/index.html" th:href="@{/web/providers/{npi}(npi=${tx.provider.npi})}" th:text="${tx.provider.firstName + ' ' + tx.provider.lastName}"></a></td>
+										<td th:text="${#lists.size(tx.documents)}"></td>
+										<td th:text="${{tx.created}}"></td>
+										<td th:text="${{tx.updated}}"></td>
+										<td class="text-center"><span th:if="${tx.isRush}" class="glyphicon glyphicon-flash text-danger"></span></td>
+										<td th:text="${tx.status}"></td>
+									</tr>
+									<tr th:id="${id} + '-tx-' + ${txStatus.count}" class="collapse">
+										<td class="inner-table" colspan="8">
+											<table class="table table-bordered">
+												<tr>
+													<th>#</th>
+													<th>Filename</th>
+													<th>Internal Document Id</th>
+													<th>Document Type</th>
+													<th>Created</th>
+													<th>Updated</th>
+												</tr>
+												<tr th:each="doc,docStatus : ${tx.documents}" >
+													<td th:text="${docStatus.count}"></td>
+													<td th:text="${doc.filename}"></td>
+													<td th:text="${doc.internalDocumentId}"></td>
+													<td><a href="documenttypes/index.html" th:href="@{/web/documenttypes(criteria=${doc.documentType})}" th:text="${doc.documentType}"></a></td>
+													<td th:text="${doc.created}"></td>
+													<td th:text="${doc.updated}"></td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</th:block>
+								<tr th:unless="${not #lists.isEmpty(page.content)}">
+									<td colspan="8" class="text-center">No results found</td>
+								</tr>
+							</table>
+							<nav th:unless="${#lists.isEmpty(page.content)}" th:replace="fragments/ajax-pagination :: ajax-pagination"></nav>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

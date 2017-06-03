@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="layout :: site-head('Customers')"/>
+	<body>
+		<header th:replace="layout :: site-header" ></header>
+		<div class="container">
+			<div th:replace="layout :: alerts"></div>
+			<div th:replace="layout :: site-page-header('Customers')"></div>
+			<form class="form-horizontal" action="customers/index.html" method="post" th:action="@{/web/customers}">
+				<div id="accordion">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a class="collapsed" data-toggle="collapse" data-target="#collapseSearch" href="javascript:;">Search</a>
+							</h4>
+						</div>
+						<div id="collapseSearch" class="panel-collapse collapse">
+							<div class="panel-body">
+			                	<div class="form-group">
+			                		<label for="firstName" class="col-xs-12 col-md-2 control-label">First Name: </label>
+			                		<div class="col-xs-12 col-md-10">
+										<input type="text" id="firstName" name="firstName" class="form-control" placeholder="First Name" th:value="*{firstName}"/>
+			                		</div>
+			                	</div>
+			                	<div class="form-group">
+			                		<label for="lastName" class="col-xs-12 col-md-2 control-label">Last Name: </label>
+			                		<div class="col-xs-12 col-md-10">
+										<input type="text" id="lastName" name="lastName" class="form-control" placeholder="Last Name" th:value="*{lastName}"/>
+			                		</div>
+			                	</div>
+								<div class="form-group">
+			                		<label for="email" class="col-xs-12 col-md-2 control-label">Email: </label>
+			                		<div class="col-xs-12 col-md-10">
+										<input type="text" id="email" name="email" class="form-control" placeholder="Email" th:value="*{email}"/>
+			                		</div>
+			                	</div>
+								<div class="form-group">
+			                		<label for="cellPhone" class="col-xs-12 col-md-2 control-label">Cell Phone: </label>
+			                		<div class="col-xs-12 col-md-10">
+										<input type="text" id="cellPhone" name="cellPhone" class="form-control" placeholder="Cell Phone" th:value="*{cellPhone}"/>
+			                		</div>
+			                	</div>
+			                	<div class="form-group">
+			                		<label for="homePhone" class="col-xs-12 col-md-2 control-label">Home Phone: </label>
+			                		<div class="col-xs-12 col-md-10">
+										<input type="text" id="homePhone" name="homePhone" class="form-control" placeholder="Home Phone" th:value="*{homePhone}"/>
+			                		</div>
+			                	</div>
+			                	<div class="form-group">
+			                		<label for="workPhone" class="col-xs-12 col-md-2 control-label">Work Phone: </label>
+			                		<div class="col-xs-12 col-md-10">
+										<input type="text" id="workPhone" name="workPhone" class="form-control" placeholder="Work Phone" th:value="*{workPhone}"/>
+			                		</div>
+			                	</div>
+			                	<div class="form-group">
+			                		<label for="altPhone" class="col-xs-12 col-md-2 control-label">Alternate Phone: </label>
+			                		<div class="col-xs-12 col-md-10">
+										<input type="text" id="altPhone" name="altPhone" class="form-control" placeholder="Alternate Phone" th:value="*{altPhone}"/>
+			                		</div>
+			                	</div>
+							</div>
+							<div class="panel-footer">
+								<div class="btn-toolbar">
+									<button id="btnSearch" class="btn btn-primary pull-right" type="submit"><span class="glyphicon glyphicon-search"></span> Search</button>
+									<button id="btnReset" class="btn btn-danger pull-right" type="button">Reset</button>
+									<a href="customers/index.html" class="btn btn-success" th:href="@{/web/customers/0}"><span class="glyphicon glyphicon-plus"></span> Add New</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+			<section th:unless="${#lists.isEmpty(page)}">
+				<table class="table table-striped table-hover">
+					<tr>
+						<th>#</th>
+						<th>ID</th>
+						<th>First Name</th>
+						<th>Last Name</th>
+						<th>Email</th>
+						<th>Cell Phone</th>
+						<th>Home Phone</th>
+						<th>Phone Phone</th>
+						<th>Alternate Phone</th>
+					</tr>
+					<tr th:each="customer,status : ${page}">
+						<td th:text="${status.count + page.size * page.number}"></td>
+						<td><a href="index.html" th:href="@{/web/customers/{id}(id=${customer.id})}" th:text="${customer.id}"></a></td>
+						<td th:text="${customer.firstName}"></td>
+						<td th:text="${customer.lastName}"></td>
+						<td th:text="${customer.email}"></td>
+						<td th:text="${customer.cellPhone}"></td>
+						<td th:text="${customer.homePhone}"></td>
+						<td th:text="${customer.workPhone}"></td>
+						<td th:text="${customer.altPhone}"></td>
+					</tr>
+				</table>
+				<nav th:replace="fragments/pagination :: pagination('/web/customers')"></nav>
+			</section>
+		</div>
+		<footer th:replace="layout :: site-footer" ></footer>
+		<th:block th:include="layout :: site-scripts" ></th:block>
+	</body>
+</html>

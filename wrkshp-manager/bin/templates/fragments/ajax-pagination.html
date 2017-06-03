@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<head>
+	</head>
+	<body>
+		<nav th:fragment='ajax-pagination' th:if="${page.totalPages gt 0}" aria-label="Page navigation" class="pagination-centered">
+			<ul class="pagination">
+				<li th:class="${page.first} ? 'disabled' : ''">
+					<span th:if="${page.first}">&laquo;</span>
+					<a href="javascript:;" class="ajax-page" th:if="${not page.first}" th:attr="data-status=${id} + ',' + ${cls},data-page=0,data-size=${page.size}">&laquo;</a>
+				</li>
+				<li th:class="${page.number} gt 0 ? '' : 'disabled'">
+					<span th:if="${page.number le 0}">&lt;</span>
+					<a href="javascript:;" class="ajax-page" th:if="${page.number gt 0}" th:attr="data-status=${id} + ',' + ${cls},data-page=${page.number - 1},data-size=${page.size}" title="Go to previous page">&lt;</a>
+				</li>
+				<li th:each="i : ${#numbers.sequence(1, page.totalPages)}" th:class="${page.number eq i - 1} ? 'active' : ''">
+					<span th:if="${page.number eq i - 1}" th:text="${i}">1</span>
+					<a href="javascript:;" class="ajax-page" th:if="not ${page.number eq i - 1}" th:attr="data-status=${id} + ',' + ${cls},data-page=${i - 1},data-size=${page.size}"><span th:text="${i}">1</span></a>
+				</li>
+				<li th:class="${page.number + 1 lt page.totalPages} ? '' : 'disabled'">
+					<span th:if="${page.number + 1 eq page.totalPages}">&gt;</span>
+					<a href="javascript:;" class="ajax-page" th:if="${page.number + 1 lt page.totalPages}" th:attr="data-status=${id} + ',' + ${cls},data-page=${page.number + 1},data-size=${page.size}" title="Go to next page">&gt;</a>
+				</li>
+				<li th:class="${page.last} ? 'disabled' : ''">
+					<span th:if='${page.last}'>&raquo;</span>
+					<a href="javascript:;" class="ajax-page" th:if="${not page.last}" th:attr="data-status=${id} + ',' + ${cls},data-page=${page.totalPages - 1},data-size=${page.size}">&raquo;</a>
+				</li>
+			</ul>
+		</nav>
+	</body>
+</html>

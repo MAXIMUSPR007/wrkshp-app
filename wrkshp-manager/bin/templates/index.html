@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="layout :: site-head('Wrkshp Manager')"/>
+	<body>
+		<header th:replace="layout :: site-header" ></header>
+		<div class="container">
+			<div th:replace="layout :: site-page-header('Welcome to Wrkshp Manager!')"></div>
+			<div class="well well-sm">
+			</div>
+		</div>
+		<footer th:replace="layout :: site-footer" ></footer>
+		<th:block th:include="layout :: site-scripts"></th:block>
+		<script src="/js/home.js"></script>
+	</body>
+</html>

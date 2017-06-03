@@ -1,0 +1,86 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.3.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'application'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+jar {
+	baseName = "${artifact}"
+	version = "${version}"
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	// Spring Boot Starters
+	compile('org.springframework.boot:spring-boot-starter-actuator')
+	compile('org.springframework.boot:spring-boot-starter-cache')
+	compile('org.springframework.boot:spring-boot-starter-security')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-actuator-docs')
+	compile('org.springframework.boot:spring-boot-devtools')
+	compile('org.springframework.boot:spring-boot-configuration-processor')
+	
+	// Thymeleaf
+	compile('org.thymeleaf:thymeleaf:3.0.5.RELEASE')
+	compile('org.thymeleaf:thymeleaf-spring4:3.0.5.RELEASE')
+	compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.2.RELEASE')
+	compile('org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.0.RELEASE')
+	
+	// Logstash Encoder
+	compile('net.logstash.logback:logstash-logback-encoder:4.6')
+	
+	// ModelMapper
+	compile('org.modelmapper:modelmapper:0.7.8')
+	
+	compile project(':wrkshp-data')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+mainClassName = 'com.darthmaximus.wrkshp.WrkshpManagerApplication'
+
+eclipse {
+	classpath {
+		 containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+		 containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
+	}
+}
+
+springBoot {
+	executable = true
+}
+
+task local {
+	bootRun { systemProperty "spring.profiles.active", "local" }
+}
+
+bootRun {
+  if ( project.hasProperty('springDebug') ) {
+	  args '--debug'
+  }
+}
+  
+bootRun.mustRunAfter local
+
+processResources {
+	filesMatching("**/*.properties") {		
+		expand(project.properties)
+	}
+}

@@ -1,0 +1,5 @@
+#org.springsource.ide.eclipse.gradle.core.preferences.GradleProjectPreferences
+#Tue Oct 18 23:10:28 EDT 2016
+build.family.org.gradle.tooling.model.eclipse.HierarchicalEclipseProject=;wrkshp-data;wrkshp-manager;
+org.springsource.ide.eclipse.gradle.linkedresources=
+org.springsource.ide.eclipse.gradle.rootprojectloc=
